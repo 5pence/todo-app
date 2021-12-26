@@ -1,25 +1,48 @@
-import logo from './logo.svg';
+import React, { Component } from 'react'
 import './App.css';
+import TodoForm from './components/TodoForm';
+import TodoList from './components/TodoList';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export class App extends Component {
+
+
+  state = {
+    todos: [
+      { id: 1, title: 'Sleep', description: "going home to sleep" },
+      { id: 2, title: 'Eat', description: "gonna eat dinner" }
+    ]
+  }
+
+  addTodo = (todo) => {
+    console.log(todo, "<===from app.js")
+    const myTodo = {
+      id: Math.random(),
+      title: todo.title,
+      description: todo.description
+    }
+
+    this.setState({
+      todos: [...this.state.todos, myTodo]
+    })
+
+  }
+
+  deleteTodo = (id) => {
+
+    const filteredTodos = this.state.todos.filter(todo => todo.id !== id)
+    this.setState({ todos: filteredTodos })
+  }
+
+
+
+  render() {
+    return (
+      <div>
+        <TodoForm addTodo={this.addTodo} />
+        {this.state.todos.length > 0 ? <TodoList todos={this.state.todos} deleteTodo={this.deleteTodo} /> : <p>no todos available</p>}
+      </div>
+    )
+  }
 }
 
-export default App;
+export default App
